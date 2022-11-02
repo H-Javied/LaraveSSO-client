@@ -73,4 +73,22 @@ class SSOController extends Controller
         Auth::login($user);
         return redirect(route("home"));
     }
+
+    public function getBlogs(Request $request)
+    {
+        $access_token = $request->session()->get("access_token");
+        $response = Http::withHeaders([
+            "Accept" => "application/json",
+            "Authorization" => "Bearer " . $access_token
+        ])->get(config("auth.sso_host") . "/api/user");
+        // return $response->json();
+
+        $userData = $response->json();
+        // dd($userData["permission"]);
+        if (!$userData["permission"]) {
+            return view("welcome");
+        } else {
+            return redirect(config("auth.sso_host") . "/api/blog-Posts");
+        }
+    }
 }
