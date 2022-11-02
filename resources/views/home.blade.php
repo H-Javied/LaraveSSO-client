@@ -17,8 +17,21 @@
                     {{ __('You are logged in!') }}
                     <br>
                     <a href="{{route('blogs')}}">Check blogs</a>
+                    <br>
+                    <a href="{{route('betaTester')}}">Developer?</a> Help us with our beta testing.
+                    @if(session()->has('message'))
+                    <div class="alert alert-success">
+                        {{ session()->get('message') }}
+                    </div>
+                    @endif
+                    @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                    <div style="color:red;">{{$error}}</div>
+                    @endforeach
+                    @endif
                 </div>
             </div>
+
         </div>
     </div>
 </div>
