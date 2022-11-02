@@ -91,4 +91,31 @@ class SSOController extends Controller
             return redirect(config("auth.sso_host") . "/api/blog-Posts");
         }
     }
+
+
+    public function chkBetaTester()
+    {
+        return view("becomePremium");
+    }
+
+    public function becomeBetaTester(Request $request)
+    {
+        $access_token = $request->session()->get("access_token");
+        $response = Http::withHeaders([
+            "Accept" => "application/json",
+            "Authorization" => "Bearer " . $access_token
+        ])->get(config("auth.sso_host") . "/api/user");
+        // return $response->json();
+
+        $userData = $response->json();
+        if (strtoupper($userData["country"]) != "USA") {
+            return redirect(route("home"))->withErrors("This offer is not available in your country");
+        } else {
+            $response = Http::withHeaders([
+                "Accept" => "application/json",
+                "Authorization" => "Bearer " . $access_token
+            ])->get(config("auth.sso_host") . "/api/betaTesterPermission");
+            return redirect(route("home"))->with("message", "You are a beta developer");
+        }
+    }
 }
