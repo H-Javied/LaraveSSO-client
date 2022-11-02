@@ -24,6 +24,8 @@ Route::get("/login/get", [SSOController::class, 'userLogin'])->name('sso-login')
 Route::get("/callback", [SSOController::class, 'getCallback'])->name("callback");
 Route::get("/authUser", [SSOController::class, 'ssoUser'])->name("connect");
 Route::get("/user-blogs", [SSOController::class, 'getBlogs'])->name("blogs");
+Route::get("/beta-Tester", [SSOController::class, 'chkBetaTester'])->name("betaTester");
+Route::get("/join-beta-Tester", [SSOController::class, 'becomeBetaTester'])->name("joinBetaTesters");
 
 Auth::routes(['register' => false, 'reset' => false]);
 
